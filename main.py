@@ -36,3 +36,11 @@ def send_email(subject, body, sender, recipients, password):
     
 send_email(subject, body, sender, recipients, password)
 
+def main():
+    while True:
+        check_updates()
+        # Wait 1 day to check
+        time.sleep(86400)
+
+if __name__ == '__main__':
+    main()
