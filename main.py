@@ -1,9 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 import smtplib
-from email.mime.text import MIMEtext
+from email.mime.text import MIMEText
 from dotenv import load_dotenv
 import os
+import time
 
 load_dotenv()
 
@@ -25,7 +26,7 @@ password = os.getenv("PASSWORD")
 recipients = ["EMAIL"] # myself in this case
   
 def send_email(subject, body, sender, recipients, password):
-    msg = MIMEtext(body)
+    msg = MIMEText(body)
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = ', '.join(recipients)
