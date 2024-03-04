@@ -5,16 +5,31 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 import os
 import time
+import hashlib
 
 load_dotenv()
 
-# Check for updates
+url_list = os.getenv("URLLIST").split(",") if os.getenv("URLLIST") else []
 
+# Check for updates
 def check_updates():
-    url = "www.example.com/careers"
-    response = requests.get(url)
+    response = requests.get(url_list)
     soup = BeautifulSoup(response.content, 'html.parser')
-    job_postings = soup.find_all('div', class_='job_posting')
+    content_container = soup.find('div', class_="active")
+    current_hash = hashlib.sha256(str(content_container).encode('utf-8')).hexdigest()
+    
+    try:
+        with open("previous_hash.txt", "r") as file:
+            previous_hash = file.read()
+    except FileNotFoundError:
+        previous_hash = None # No Previous hash if file doesn't exist
+        
+    # Compare previous hash to current
+    if current_hash != previous_hash:
+        send_email()
+        # Update previous_hash.txt
+        with open("previous_hash.txt", "w") as file:
+                  file.write(current_hash)
     
     # Check for updates by comparing to prev. state
     # Send email notification if updates detected
@@ -45,4 +60,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    check_updates()
+    # send_email(subject, body, sender, recipients, password)
