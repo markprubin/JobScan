@@ -19,11 +19,11 @@ def check_updates():
     # Check for updates by comparing to prev. state
     # Send email notification if updates detected
 
-subject = "Email Test Subject"
+subject = "Daily Job Posting Update"
 body = "This is the body of the text"
 sender = os.getenv("EMAIL")
 password = os.getenv("PASSWORD")
-recipients = ["EMAIL"] # myself in this case
+recipients = os.getenv("EMAIL").split(",") if os.getenv("EMAIL") else [] # myself in this case
   
 def send_email(subject, body, sender, recipients, password):
     msg = MIMEText(body)
@@ -35,13 +35,14 @@ def send_email(subject, body, sender, recipients, password):
         smtp_server.sendmail(sender, recipients, msg.as_string())
     print("Message sent!")
     
-send_email(subject, body, sender, recipients, password)
 
 def main():
     while True:
         check_updates()
         # Wait 1 day to check
         time.sleep(86400)
+        # send_email(subject, body, sender, recipients, password)
+
 
 if __name__ == '__main__':
     main()
