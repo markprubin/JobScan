@@ -20,7 +20,7 @@ url = os.getenv("URLLIST")
 def check_updates():
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    content_container = soup.find('div', class_="content")
+    content_container = soup.find('div', class_="postings-wrapper")
     new_content = content_container.get_text(strip=True)
     
     try:
@@ -71,6 +71,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-    # check_updates()
+    # main()
+    check_updates()
     # send_email(subject, body, sender, recipients, password)
