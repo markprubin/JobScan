@@ -1,3 +1,4 @@
+from re import sub
 import requests
 from bs4 import BeautifulSoup
 import smtplib
@@ -5,37 +6,48 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 import os
 import time
-import hashlib
+import difflib
 
 load_dotenv()
 
-url_list = os.getenv("URLLIST").split(",") if os.getenv("URLLIST") else []
+# Single URL
+url = os.getenv("URLLIST")
+# List of URLs
+# url_list = os.getenv("URLLIST").split(",") if os.getenv("URLLIST") else []
+
 
 # Check for updates
 def check_updates():
-    response = requests.get(url_list)
+    response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    content_container = soup.find('div', class_="active")
-    current_hash = hashlib.sha256(str(content_container).encode('utf-8')).hexdigest()
+    content_container = soup.find('div', class_="content")
+    new_content = content_container.get_text(strip=True)
     
     try:
-        with open("previous_hash.txt", "r") as file:
-            previous_hash = file.read()
+        with open("updates.txt", "r") as file:
+            old_content = file.read()
     except FileNotFoundError:
-        previous_hash = None # No Previous hash if file doesn't exist
-        
-    # Compare previous hash to current
-    if current_hash != previous_hash:
-        send_email()
-        # Update previous_hash.txt
-        with open("previous_hash.txt", "w") as file:
-                  file.write(current_hash)
+        old_content = "" # Assume no existing file put in empty string
+
+    differ = difflib.Differ()
+    differences = list(differ.compare(old_content.splitlines(), new_content.splitlines()))
+
+    updates = [line for line in differences if line.startswith('+') or line.startswith('-') or line.startswith('?')]
+    print(updates)
     
-    # Check for updates by comparing to prev. state
-    # Send email notification if updates detected
+    if updates:
+        update_text = '\n'.join(updates)
+        send_email(subject, update_text, sender, recipients, password)
+        
+        # Update updates.txt
+        with open("updates.txt", "w") as file:
+            file.write(new_content)
+            
+    else:
+        no_updates_message = "No updates found today."
+        send_email("Daily Job Posting Update - No Changes", no_updates_message, sender, recipients, password)
 
 subject = "Daily Job Posting Update"
-body = "This is the body of the text"
 sender = os.getenv("EMAIL")
 password = os.getenv("PASSWORD")
 recipients = os.getenv("EMAIL").split(",") if os.getenv("EMAIL") else [] # myself in this case
