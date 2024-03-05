@@ -32,8 +32,8 @@ def check_updates():
     differ = difflib.Differ()
     differences = list(differ.compare(old_content.splitlines(), new_content.splitlines()))
 
+    # Ensures that only real updates are passed, and any whitespace that occurs due to no changes being made does not trigger a "change"
     updates = [line for line in differences if line.startswith('+') or line.startswith('-') or line.startswith('?')]
-    print(updates)
     
     if updates:
         update_text = '\n'.join(updates)
@@ -66,12 +66,11 @@ def send_email(subject, body, sender, recipients, password):
 def main():
     while True:
         check_updates()
-        # Wait 1 day to check
-        time.sleep(86400)
-        # send_email(subject, body, sender, recipients, password)
+        # # Wait 1 day to check
+        # time.sleep(86400)
 
 
 if __name__ == '__main__':
-    # main()
-    check_updates()
+    main()
+    # check_updates()
     # send_email(subject, body, sender, recipients, password)
