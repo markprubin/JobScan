@@ -1,16 +1,16 @@
 # JobScan
 
-Simple overview of use/purpose.
+Tired of always checking a handful of companies you are interested in? Want to get an email each day that will spit out any changes to their career page section? Look no further. If you are **funemployed** like I am (or hopefully, WAS), then this will hopefully save you some time.
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
+Requirements.txt...
 
 ### Installing
 
