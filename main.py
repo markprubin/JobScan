@@ -66,9 +66,6 @@ def send_email(subject, body, sender, recipients, password):
 def main():
     while True:
         check_updates()
-        
-        # Timer
-        time.sleep(3610)
 
 
 if __name__ == '__main__':
