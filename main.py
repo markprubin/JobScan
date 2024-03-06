@@ -68,12 +68,12 @@ def main():
         check_updates()
         
         # Timer
-        # time.sleep(86400)
+        time.sleep(3610)
 
 
 if __name__ == '__main__':
-    # main()
-    check_updates()
+    main()
+    # check_updates()
     
     # To test send_email function ()
     # send_email(subject, body, sender, recipients, password)
