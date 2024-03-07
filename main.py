@@ -64,13 +64,8 @@ def send_email(subject, body, sender, recipients, password):
     
 
 def main():
-    while True:
-        check_updates()
+    check_updates()
 
 
 if __name__ == '__main__':
     main()
-    # check_updates()
-    
-    # To test send_email function ()
-    # send_email(subject, body, sender, recipients, password)
