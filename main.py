@@ -20,8 +20,17 @@ url = os.getenv("URLLIST")
 def check_updates():
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    content_container = soup.find('div', class_="postings-wrapper")
-    new_content = content_container.get_text(strip=True)
+    # Targets each instance of an <a> tag on kitman's website
+    content_containers = soup.find_all('a', class_="posting-title")
+    new_content = ""
+    
+    # Works for the entire postings wrapper, but brings about formatting issues
+    # content_containers = soup.find('<div>', class_="postings-wrapper)
+    # new_content = content_container.get_text(strip=True)
+    
+    # Targets each instance and displays the text with a break for each <a> tag
+    for container in content_containers:
+        new_content += container.get_text(strip=True) + "<br>"
     
     try:
         with open("updates.txt", "r") as file:
@@ -53,7 +62,7 @@ password = os.getenv("PASSWORD")
 recipients = os.getenv("EMAIL").split(",") if os.getenv("EMAIL") else [] # myself in this case
   
 def send_email(subject, body, sender, recipients, password):
-    msg = MIMEText(body)
+    msg = MIMEText(body, 'html')
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = ', '.join(recipients)
