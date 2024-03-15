@@ -1,13 +1,19 @@
-import json
+from re import sub
 import requests
 from bs4 import BeautifulSoup
 import smtplib
 from email.mime.text import MIMEText
+from dotenv import load_dotenv
+import os
 import difflib
 
-def load_urls():
-    with open('urls.json', 'r') as file:
-        return json.load(file)
+load_dotenv()
+
+# Single URL
+url = os.getenv("URLLIST")
+# List of URLs
+# url_list = os.getenv("URLLIST").split(",") if os.getenv("URLLIST") else []
+
 
 # Check for updates
 def check_updates():
