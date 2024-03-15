@@ -1,20 +1,13 @@
-from re import sub
+import json
 import requests
 from bs4 import BeautifulSoup
 import smtplib
 from email.mime.text import MIMEText
-from dotenv import load_dotenv
-import os
-import time
 import difflib
 
-load_dotenv()
-
-# Single URL
-url = os.getenv("URLLIST")
-# List of URLs
-# url_list = os.getenv("URLLIST").split(",") if os.getenv("URLLIST") else []
-
+def load_urls():
+    with open('urls.json', 'r') as file:
+        return json.load(file)
 
 # Check for updates
 def check_updates():
@@ -23,10 +16,6 @@ def check_updates():
     # Targets each instance of an <a> tag on kitman's website
     content_containers = soup.find_all('a', class_="posting-title")
     new_content = ""
-    
-    # Works for the entire postings wrapper, but brings about formatting issues
-    # content_containers = soup.find('<div>', class_="postings-wrapper)
-    # new_content = content_container.get_text(strip=True)
     
     # Targets each instance and displays the text with a break for each <a> tag
     for container in content_containers:

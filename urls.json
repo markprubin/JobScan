@@ -1,0 +1,10 @@
+{
+    "kitmanlabs": {
+        "url": "https://jobs.lever.co/kitmanlabs",
+        "find_all_params": {"name": "a", "class_": "posting-title"}
+    },
+    "teamworks": {
+        "url": "https://www.teamworks.com/company#careers",
+        "find_all_params": {"name": "div", "class_": "rr-job-board"}
+    }
+}
