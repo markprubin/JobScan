@@ -164,5 +164,4 @@ cython_debug/
 .pem
 
 # JSON
-urls.json
 *_updates.json
